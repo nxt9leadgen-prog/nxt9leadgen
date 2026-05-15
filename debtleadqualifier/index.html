@@ -1,1 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debt Lead Qualifier — Score & Export Any Lead List in Seconds</title>
+<meta name="description" content="Upload any CSV from GoHighLevel, Salesforce, or any CRM. Instantly score, tier, and export only your hottest debt settlement leads. No subscription. No data leaves your browser.">
+<meta property="og:title" content="Debt Lead Qualifier — Score Any Lead List in Seconds">
+<meta property="og:description" content="Hot. Warm. Standard. Cold. Know exactly which leads to call first. Upload any CSV, set your filters, export your pipeline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06080f;
+  --s1: #0b0e1a;
+  --s2: #0f1220;
+  --border: #1a1f35;
+  --border2: #242940;
+  --accent: #4f7eff;
+  --accent2: #6b95ff;
+  --green: #00e5a0;
+  --red: #ff3d5a;
+  --amber: #ffaa33;
+  --text: #e8eeff;
+  --muted: #4a5272;
+  --muted2: #7a85aa;
+  --hot: #ff3d5a;
+  --warm: #ffaa33;
+}
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* GRID BACKGROUND */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(6, 8, 15, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  padding: 160px 0 100px;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(79, 126, 255, 0.08);
+  border: 1px solid rgba(79, 126, 255, 0.2);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 11px;
+  color: var(--accent2);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(42px, 7vw, 80px);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.hero h1 .line2 {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(79, 126, 255, 0.5);
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+  position: relative;
+}
+
+.hero h1 em::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  border-radius: 2px;
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--muted2);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto 48px;
+  font-weight: 300;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 16px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--accent2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(79, 126, 255, 0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--muted2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 16px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border2);
+}
+
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-trust {
+  margin-top: 48px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  animation: fadeUp 0.6s 0.4s ease both;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-trust span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-trust span::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* MOCK UI */
+.mock-wrap {
+  margin: 80px 0;
+  animation: fadeUp 0.8s 0.5s ease both;
+}
+
+.mock-bar {
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mock-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+.mock-title {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-left: 8px;
+}
+
+.mock-body {
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 0 0 12px 12px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.mock-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mock-stat {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.mock-stat-lbl {
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+}
+
+.mock-stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.mock-stat-val.g { color: var(--green); }
+.mock-stat-val.r { color: var(--red); }
+.mock-stat-val.b { color: var(--accent); }
+.mock-stat-val.a { color: var(--amber); }
+
+.mock-tiers {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.mock-tier {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mock-tier-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+.mock-table-head {
+  display: grid;
+  grid-template-columns: 80px 60px 1fr 120px 100px 80px 80px;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--border);
+}
+
+.mock-row {
+  display: grid;
+  grid-template-columns: 80px 60px 1fr 120px 100px 80px 80px;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.mock-row:hover { background: var(--s2); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.b-hot  { background: rgba(255,61,90,0.15);  color: var(--hot); }
+.b-warm { background: rgba(255,170,51,0.15); color: var(--warm); }
+.b-std  { background: rgba(79,126,255,0.15); color: var(--accent); }
+.b-cold { background: rgba(74,82,112,0.2);   color: var(--muted2); }
+
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.bar-track {
+  width: 36px; height: 4px;
+  background: var(--s2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill { height: 100%; border-radius: 2px; }
+
+/* SECTIONS */
+section { padding: 100px 0; }
+
+.section-tag {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-tag::after {
+  content: '';
+  flex: 1;
+  max-width: 40px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.4;
+}
+
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+h2 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.section-sub {
+  color: var(--muted2);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 520px;
+  font-weight: 300;
+  margin-bottom: 60px;
+}
+
+/* HOW IT WORKS */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.step {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  padding: 36px 32px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.step:first-child { border-radius: 12px 0 0 12px; }
+.step:last-child  { border-radius: 0 12px 12px 0; }
+.step:hover { border-color: var(--border2); }
+
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--border2);
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.step-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.step-arrow {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px; height: 28px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 2;
+  color: var(--accent);
+}
+
+/* FEATURES */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.feat {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  padding: 32px;
+  transition: all 0.2s;
+}
+
+.feat:nth-child(1) { border-radius: 12px 0 0 0; }
+.feat:nth-child(2) { border-radius: 0 12px 0 0; }
+.feat:nth-child(3) { border-radius: 0 0 0 12px; }
+.feat:nth-child(4) { border-radius: 0 0 12px 0; }
+.feat:hover { border-color: var(--border2); background: var(--s2); }
+
+.feat-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feat-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.feat-desc {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.feat-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(0, 229, 160, 0.08);
+  color: var(--green);
+  border: 1px solid rgba(0, 229, 160, 0.2);
+}
+
+/* WHO IT'S FOR */
+.personas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.persona {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  transition: all 0.2s;
+}
+
+.persona:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(79, 126, 255, 0.1);
+}
+
+.persona-role {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.persona-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.persona-pain {
+  font-size: 12px;
+  color: var(--muted2);
+  line-height: 1.7;
+  font-weight: 300;
+  border-left: 2px solid var(--border2);
+  padding-left: 12px;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.persona-fix {
+  font-size: 12px;
+  color: var(--green);
+  line-height: 1.6;
+}
+
+/* PRIVACY BLOCK */
+.privacy-block {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.privacy-statement {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.privacy-statement em {
+  font-style: normal;
+  color: var(--green);
+}
+
+.privacy-points {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.privacy-point {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.privacy-point-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.privacy-point-text {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.privacy-point-text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* PRICING */
+.pricing-card {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pricing-header {
+  background: linear-gradient(135deg, var(--accent) 0%, #3a5fd9 100%);
+  padding: 36px;
+  text-align: center;
+}
+
+.pricing-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.pricing-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.pricing-amount sup {
+  font-size: 28px;
+  vertical-align: top;
+  margin-top: 16px;
+  display: inline-block;
+}
+
+.pricing-note {
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+}
+
+.pricing-body {
+  padding: 36px;
+}
+
+.pricing-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted2);
+  font-weight: 300;
+}
+
+.pricing-feature:last-of-type { border-bottom: none; }
+
+.pricing-feature::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pricing-feature strong { color: var(--text); font-weight: 500; }
+
+.pricing-cta {
+  margin-top: 28px;
+  display: block;
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 18px;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.pricing-cta:hover {
+  background: var(--accent2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(79,126,255,0.3);
+}
+
+.pricing-guarantee {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* FAQ */
+.faqs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.faq {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.faq-q {
+  padding: 20px 24px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.15s;
+  user-select: none;
+}
+
+.faq-q:hover { color: var(--accent); }
+
+.faq-icon {
+  font-size: 18px;
+  color: var(--muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.faq.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq.open .faq-a { max-height: 300px; }
+
+.faq-a-inner {
+  padding: 0 24px 20px;
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.7;
+  font-weight: 300;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin: 0 24px;
+  margin-top: 0;
+}
+
+/* CTA SECTION */
+.cta-section {
+  text-align: center;
+  padding: 100px 0 140px;
+}
+
+.cta-glow {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 40px;
+}
+
+.cta-glow::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(circle, rgba(79,126,255,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .mock-stats { grid-template-columns: repeat(3, 1fr); }
+  .mock-table-head, .mock-row { grid-template-columns: 70px 50px 1fr 90px; }
+  .mock-table-head > *:nth-child(5),
+  .mock-table-head > *:nth-child(6),
+  .mock-table-head > *:nth-child(7),
+  .mock-row > *:nth-child(5),
+  .mock-row > *:nth-child(6),
+  .mock-row > *:nth-child(7) { display: none; }
+  .steps { grid-template-columns: 1fr; gap: 12px; }
+  .step { border-radius: 12px !important; }
+  .step-arrow { display: none; }
+  .features { grid-template-columns: 1fr; }
+  .feat { border-radius: 12px !important; }
+  .personas { grid-template-columns: 1fr; }
+  .privacy-block { grid-template-columns: 1fr; gap: 32px; padding: 36px 24px; }
+  .pricing-grid { grid-template-columns: 1fr !important; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">NXT9 <span>LEADGEN</span></a>
+    <a class="nav-cta" href="#pricing">Plans From $9.88 →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-eyebrow">Built for Debt Settlement Operations</div>
+    <h1>
+      Stop Calling<br>
+      <em>Dead Leads.</em><br>
+      <span class="line2">Start Closing.</span>
+    </h1>
+    <p class="hero-sub">
+      Upload any CSV from GoHighLevel, Salesforce, or any CRM.
+      Instantly score every lead Hot, Warm, Standard, or Cold —
+      and export only the ones worth your team's time.
+    </p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">See Pricing — From $9.88 →</a>
+      <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+    </div>
+    <div class="hero-trust">
+      <span>One-time payment</span>
+      <span>No subscription ever</span>
+      <span>Your data never leaves your browser</span>
+      <span>Works with any CRM export</span>
+    </div>
+  </div>
+
+  <!-- MOCK UI -->
+  <div class="mock-wrap reveal">
+    <div class="mock-bar">
+      <div class="mock-dot" style="background:#ff3d5a"></div>
+      <div class="mock-dot" style="background:#ffaa33"></div>
+      <div class="mock-dot" style="background:#00e5a0"></div>
+      <span class="mock-title">// UNIVERSAL LEAD QUALIFIER · POWERED BY CLAUDE</span>
+    </div>
+    <div class="mock-body">
+      <div class="mock-stats">
+        <div class="mock-stat">
+          <div class="mock-stat-lbl">Total Loaded</div>
+          <div class="mock-stat-val" style="color:var(--text)">8,241</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-lbl">Qualified</div>
+          <div class="mock-stat-val g">3,187</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-lbl">Removed</div>
+          <div class="mock-stat-val r">5,054</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-lbl">Avg Unsec. Debt</div>
+          <div class="mock-stat-val b">$23k</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-lbl">Have Phone #</div>
+          <div class="mock-stat-val a">3,041</div>
+        </div>
+      </div>
+      <div class="mock-tiers">
+        <div class="mock-tier"><div class="mock-tier-dot" style="background:var(--hot)"></div>🔥 Hot <span style="color:var(--muted);font-size:10px;margin-left:4px">412</span></div>
+        <div class="mock-tier"><div class="mock-tier-dot" style="background:var(--warm)"></div>⚡ Warm <span style="color:var(--muted);font-size:10px;margin-left:4px">891</span></div>
+        <div class="mock-tier"><div class="mock-tier-dot" style="background:var(--accent)"></div>👀 Standard <span style="color:var(--muted);font-size:10px;margin-left:4px">1,604</span></div>
+        <div class="mock-tier"><div class="mock-tier-dot" style="background:var(--muted)"></div>❄️ Cold <span style="color:var(--muted);font-size:10px;margin-left:4px">280</span></div>
+      </div>
+      <div class="mock-table-head">
+        <div>Tier</div><div>Score</div><div>Full Name</div>
+        <div>Phone</div><div>Unsec. Debt</div><div>DTI%</div><div>Status</div>
+      </div>
+      <div class="mock-row">
+        <div><span class="badge b-hot">🔥 Hot</span></div>
+        <div><div class="score-bar"><span>10</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--hot)"></div></div></div></div>
+        <div>Maria R.</div><div style="font-size:11px;color:var(--muted2)">(***) ***-4821</div>
+        <div style="color:var(--green)">$34,200</div><div style="color:var(--amber)">91%</div>
+        <div style="color:var(--muted2);font-size:11px">Follow Up</div>
+      </div>
+      <div class="mock-row">
+        <div><span class="badge b-hot">🔥 Hot</span></div>
+        <div><div class="score-bar"><span>9</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--hot)"></div></div></div></div>
+        <div>James K.</div><div style="font-size:11px;color:var(--muted2)">(***) ***-7103</div>
+        <div style="color:var(--green)">$28,900</div><div style="color:var(--amber)">78%</div>
+        <div style="color:var(--muted2);font-size:11px">Callback</div>
+      </div>
+      <div class="mock-row">
+        <div><span class="badge b-warm">⚡ Warm</span></div>
+        <div><div class="score-bar"><span>7</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--warm)"></div></div></div></div>
+        <div>Sandra T.</div><div style="font-size:11px;color:var(--muted2)">(***) ***-2290</div>
+        <div style="color:var(--green)">$19,400</div><div style="color:var(--muted2)">54%</div>
+        <div style="color:var(--muted2);font-size:11px">Interested</div>
+      </div>
+      <div class="mock-row">
+        <div><span class="badge b-std">👀 Standard</span></div>
+        <div><div class="score-bar"><span>5</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--accent)"></div></div></div></div>
+        <div>Robert M.</div><div style="font-size:11px;color:var(--muted2)">(***) ***-6614</div>
+        <div style="color:var(--muted2)">$11,800</div><div style="color:var(--muted2)">42%</div>
+        <div style="color:var(--muted2);font-size:11px">New Lead</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="wrap">
+    <div class="section-tag">Process</div>
+    <h2>Three steps.<br><em>Zero guesswork.</em></h2>
+    <p class="section-sub">No training required. No account to create. Open the tool, upload your file, export your pipeline in under two minutes.</p>
+
+    <div class="steps reveal">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div class="step-title">Upload Any CSV</div>
+        <p class="step-desc">Export from GoHighLevel, Salesforce, HubSpot, or any dialer. Drop the file in. The tool auto-maps your columns instantly — no template required.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div class="step-title">Set Your Filters</div>
+        <p class="step-desc">Toggle stages, statuses, lead sources, and campaigns in one click. Set minimum debt thresholds, DTI ranges, and credit score limits with your exact criteria.</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div class="step-title">Export Your Pipeline</div>
+        <p class="step-desc">Download Hot leads first. Batch export for dialers with cell-first phone logic. Build any custom column format and save it as a reusable template.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">Features</div>
+    <h2>Built for ops teams<br>who move <em>fast.</em></h2>
+    <p class="section-sub">Every feature was designed around one question: what do debt settlement ops managers actually need at 7am before the dialer fires up?</p>
+
+    <div class="features reveal">
+      <div class="feat">
+        <span class="feat-icon">🧠</span>
+        <div class="feat-title">AI Lead Scoring</div>
+        <p class="feat-desc">Every lead gets a 1-10 score based on unsecured debt, DTI%, credit score, credit utilization, inactivity, and call history. Hot leads surface to the top automatically.</p>
+        <span class="feat-tag">10-point algorithm</span>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">📂</span>
+        <div class="feat-title">Universal CSV Compatibility</div>
+        <p class="feat-desc">Works with any CRM export. Auto-detects columns from GoHighLevel, Salesforce, HubSpot, and custom formats. Save column mappings and reuse them in one click.</p>
+        <span class="feat-tag">Any CSV, any headers</span>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">📤</span>
+        <div class="feat-title">Dialer-Ready Batch Export</div>
+        <p class="feat-desc">Export in exact dialer format with cell phone first, home phone as fallback. Batch by any size. Files named batch1_leads1to500.csv — no duplicates, no gaps.</p>
+        <span class="feat-tag">Cordoba, GHL, custom formats</span>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">🔒</span>
+        <div class="feat-title">100% Private by Design</div>
+        <p class="feat-desc">Your lead data never touches a server. Processing happens entirely in your browser tab. Close the tab and the data is gone. No account, no cloud, no compliance risk.</p>
+        <span class="feat-tag">Zero data transmission</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">Who It's For</div>
+    <h2>If you're scrubbing leads<br>manually, this is <em>for you.</em></h2>
+    <p class="section-sub">Built specifically for the people inside debt settlement companies who own list quality and dialer performance.</p>
+
+    <div class="personas reveal">
+      <div class="persona">
+        <div class="persona-role">Operations Manager</div>
+        <div class="persona-title">"I run the dialer. I need the right leads, in the right order, every morning."</div>
+        <p class="persona-pain">"I'm spending 2 hours manually filtering GHL exports in Excel before I can even start the day."</p>
+        <p class="persona-fix">✓ Upload, run, export in under 3 minutes. Every morning. Same filters, saved.</p>
+      </div>
+      <div class="persona">
+        <div class="persona-role">Sales Director</div>
+        <div class="persona-title">"My closers need hot leads, not recycled junk that wastes their time."</div>
+        <p class="persona-pain">"We're paying $15-50 per lead and half of them are dead on arrival — wrong status, no phone, too low debt."</p>
+        <p class="persona-fix">✓ Set debt minimums, exclude bad statuses. Only closeable leads reach the dialer.</p>
+      </div>
+      <div class="persona">
+        <div class="persona-role">Lead Vendor / Agency</div>
+        <div class="persona-title">"I deliver lead lists. My clients need them scored and segmented before delivery."</div>
+        <p class="persona-pain">"Every client has different criteria. I'm manually building separate Excel filters for each one."</p>
+        <p class="persona-fix">✓ Save a column mapping and export template per client. Run each in seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY BLOCK -->
+<section>
+  <div class="wrap">
+    <div class="privacy-block reveal">
+      <div>
+        <div class="section-tag">Privacy First</div>
+        <p class="privacy-statement">Your lead data is<br><em>your lead data.</em><br>Full stop.</p>
+      </div>
+      <div class="privacy-points">
+        <div class="privacy-point">
+          <div class="privacy-point-icon">🏠</div>
+          <div class="privacy-point-text"><strong>Runs in your browser.</strong> All processing happens locally on your machine. No data is ever transmitted to any server.</div>
+        </div>
+        <div class="privacy-point">
+          <div class="privacy-point-icon">🚫</div>
+          <div class="privacy-point-text"><strong>No account required.</strong> No login, no cloud sync, no profile. Open the tool, use it, close it.</div>
+        </div>
+        <div class="privacy-point">
+          <div class="privacy-point-icon">⚡</div>
+          <div class="privacy-point-text"><strong>Instant processing.</strong> 10,000 leads scored and sorted in under 10 seconds. No upload time, no wait time.</div>
+        </div>
+        <div class="privacy-point">
+          <div class="privacy-point-icon">🔐</div>
+          <div class="privacy-point-text"><strong>TCPA compliant by design.</strong> Your suppression lists, DNC exclusions, and campaign filters stay on your machine.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap" style="text-align:center">
+    <div class="section-tag" style="justify-content:center">Pricing</div>
+    <h2>Two plans.<br><em>Zero compromise.</em></h2>
+    <p class="section-sub" style="margin:0 auto 48px">Try it once for under $10. Or get unlimited access for your whole operation for less than $50/month.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:800px;margin:0 auto;" class="reveal pricing-grid">
+
+      <!-- SINGLE SESSION -->
+      <div class="pricing-card" style="max-width:100%">
+        <div class="pricing-header" style="background:linear-gradient(135deg,#1a1f35 0%,#0f1220 100%);border-bottom:1px solid #242940;">
+          <div class="pricing-badge" style="background:rgba(79,126,255,0.15);color:#4f7eff;border:1px solid rgba(79,126,255,0.3);">Single Session</div>
+          <div class="pricing-amount" style="font-size:56px"><sup style="font-size:22px">$</sup>9<span style="font-size:32px">.88</span></div>
+          <div class="pricing-note">One-time · Pay once · Use once</div>
+        </div>
+        <div class="pricing-body" style="text-align:left">
+          <div class="pricing-feature"><strong>One full qualification session</strong> — upload, score, filter, export</div>
+          <div class="pricing-feature"><strong>24-hour access window</strong> — session expires after 24 hours automatically</div>
+          <div class="pricing-feature"><strong>Single-use security token</strong> — link cannot be shared or reused by anyone</div>
+          <div class="pricing-feature"><strong>Full scoring algorithm</strong> — Hot / Warm / Standard / Cold tiers</div>
+          <div class="pricing-feature"><strong>Dialer-ready export</strong> — any batch size, custom column format</div>
+          <div class="pricing-feature"><strong>Browser-only processing</strong> — your data never leaves your machine</div>
+          <a href="https://buy.stripe.com/eVqaEWcG52EW4Faa228IU03" class="pricing-cta" style="background:#1e2a4a;border:1px solid #4f7eff;color:#4f7eff;">Try It Once — $9.88 →</a>
+          <p class="pricing-guarantee">⚡ Instant access · No subscription</p>
+        </div>
+      </div>
+
+      <!-- UNLIMITED SUBSCRIPTION -->
+      <div class="pricing-card" style="max-width:100%;border-color:#4f7eff;position:relative;">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#4f7eff;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:4px 16px;border-radius:999px;white-space:nowrap;">Most Popular</div>
+        <div class="pricing-header" style="background:linear-gradient(135deg,#4f7eff 0%,#3a5fd9 100%);">
+          <div class="pricing-badge">Unlimited Access</div>
+          <div class="pricing-amount" style="font-size:56px"><sup style="font-size:22px">$</sup>49<span style="font-size:32px">.88</span></div>
+          <div class="pricing-note">Per month · Cancel anytime · Access cuts off if billing lapses</div>
+        </div>
+        <div class="pricing-body" style="text-align:left">
+          <div class="pricing-feature"><strong>Unlimited qualification sessions</strong> — run as many lists as you need, any time</div>
+          <div class="pricing-feature"><strong>No session limits or expiry</strong> — access the tool whenever you need it</div>
+          <div class="pricing-feature"><strong>Always-current version</strong> — every update included automatically</div>
+          <div class="pricing-feature"><strong>Full scoring algorithm</strong> — Hot / Warm / Standard / Cold tiers</div>
+          <div class="pricing-feature"><strong>All export formats</strong> — dialer batches, GHL, custom column builder</div>
+          <div class="pricing-feature"><strong>Browser-only processing</strong> — your data never leaves your machine</div>
+          <div class="pricing-feature"><strong>Priority support</strong> — direct email response within 24 hours</div>
+          <a href="https://buy.stripe.com/3cI9AS35v5R8gnSb668IU04" class="pricing-cta">Get Unlimited Access — $49.88/mo →</a>
+          <p class="pricing-guarantee">⚡ Instant access · Cancel anytime in Stripe</p>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="margin-top:24px;font-size:12px;color:var(--muted);line-height:1.7;">
+      Not sure? Start with the $9.88 session. If you run lists more than once a week,<br>the monthly plan pays for itself in under two uses.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="section-tag" style="justify-content:center">FAQ</div>
+    <h2 style="text-align:center;margin-bottom:48px">Common <em>questions.</em></h2>
+
+    <div class="faqs reveal">
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What CRMs does this work with?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Any CRM that exports CSV files — GoHighLevel, Salesforce, HubSpot, Zoho, custom dialers, or spreadsheets. The tool auto-detects your column names and maps them. If auto-detect misses something, you fix it manually in the mapping UI and save it for next time.</div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is my lead data safe? Who can see it?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Nobody. The tool runs entirely in your browser — no data is sent to any server, ever. When you close the tab, the data is gone. This isn't a marketing claim — it's how browser-only applications technically work. Your leads stay on your machine.</div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How does the scoring algorithm work?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Every lead starts at a base score of 5. Points are added for high unsecured debt ($10k+, $20k+, $30k+), high DTI% (50%+, 80%+), lower credit scores (under 500, under 650), high credit utilization, and days of inactivity. Points are deducted for excessive call attempts. Final score is 1-10, tiered as Hot (9-10), Warm (7-8), Standard (5-6), or Cold (1-4).</div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What does "one-time payment" actually mean?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Two plans. <strong>$9.88 one-time</strong> gives you a single session — one upload, one export, access expires after 24 hours and the link cannot be shared or reused. <strong>$49.88/month</strong> gives you unlimited sessions for as long as your subscription is active. Access is cut off automatically if billing lapses.</div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I use this for multiple companies or clients?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes. The tool saves column mappings and export templates locally in your browser. You can save a separate mapping and export format for each client and switch between them in one click. There are no seat limits or usage restrictions.</div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What if I need a refund?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">30-day money-back guarantee. No questions asked. If the tool doesn't work for your use case, email for a full refund within 30 days of purchase.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section">
+  <div class="wrap">
+    <div class="cta-glow">
+      <div class="hero-eyebrow" style="margin-bottom:24px">Try once for $9.88 · Unlimited from $49.88/mo</div>
+    </div>
+    <h2 style="margin-bottom:16px">Stop wasting your closers'<br>time on <em>dead leads.</em></h2>
+    <p style="color:var(--muted2);font-size:15px;margin-bottom:40px;font-weight:300;line-height:1.7;">Upload your first list in the next five minutes.<br>Know exactly who to call before the dialer starts.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://buy.stripe.com/eVqaEWcG52EW4Faa228IU03" class="btn-secondary" style="font-size:14px;padding:16px 32px;">
+        Try Once — $9.88
+      </a>
+      <a href="https://buy.stripe.com/3cI9AS35v5R8gnSb668IU04" class="btn-primary" style="font-size:15px;padding:20px 48px;">
+        Unlimited Access — $49.88/mo →
+      </a>
+    </div>
+    <div class="hero-trust" style="margin-top:32px">
+      <span>$9.88 single session</span>
+      <span>$49.88/mo unlimited</span>
+      <span>Cancel anytime</span>
+      <span>Data never leaves your browser</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    © 2026 NXT9LeadGen · All rights reserved · Your data never leaves your browser
+  </div>
+</footer>
+
+<script>
+// FAQ toggle
+function toggleFaq(el) {
+  const faq = el.parentElement;
+  const isOpen = faq.classList.contains('open');
+  document.querySelectorAll('.faq.open').forEach(f => f.classList.remove('open'));
+  if (!isOpen) faq.classList.add('open');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
